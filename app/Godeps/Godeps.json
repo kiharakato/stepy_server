@@ -1,0 +1,17 @@
+{
+  "ImportPath": "stepy/app",
+  "GoVersion": "go1.6",
+  "GodepVersion": "v60",
+  "Deps": [
+    {
+      "ImportPath": "github.com/codegangsta/inject",
+      "Comment": "v1.0-rc1-10-g33e0aa1",
+      "Rev": "33e0aa1cb7c019ccc3fbe049a8262a6403d30504"
+    },
+    {
+      "ImportPath": "github.com/go-martini/martini",
+      "Comment": "v1.0-115-g8412a65",
+      "Rev": "8412a652ddae77553a9442708a527d0e616939a3"
+    }
+  ]
+}
