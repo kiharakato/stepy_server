@@ -4,6 +4,11 @@
 	"GodepVersion": "v60",
 	"Deps": [
 		{
+			"ImportPath": "github.com/agtorre/gocolorize",
+			"Comment": "v1.0.0",
+			"Rev": "f42b554bf7f006936130c9bb4f971afd2d87f671"
+		},
+		{
 			"ImportPath": "github.com/codegangsta/inject",
 			"Comment": "v1.0-rc1-10-g33e0aa1",
 			"Rev": "33e0aa1cb7c019ccc3fbe049a8262a6403d30504"
@@ -12,6 +17,42 @@
 			"ImportPath": "github.com/go-martini/martini",
 			"Comment": "v1.0-115-g8412a65",
 			"Rev": "8412a652ddae77553a9442708a527d0e616939a3"
+		},
+		{
+			"ImportPath": "github.com/go-sql-driver/mysql",
+			"Comment": "v1.2-88-ga197e5d",
+			"Rev": "a197e5d40516f2e9f74dcee085a5f2d4604e94df"
+		},
+		{
+			"ImportPath": "github.com/jinzhu/gorm",
+			"Rev": "25772352c2e1cb6a9c00472999015a32dd646218"
+		},
+		{
+			"ImportPath": "github.com/lib/pq/hstore",
+			"Comment": "go1.0-cutoff-47-g93e9980",
+			"Rev": "93e9980741c9e593411b94e07d5bad8cfb4809db"
+		},
+		{
+			"ImportPath": "github.com/revel/revel",
+			"Comment": "v0.12.0-1-g83c6204",
+			"Rev": "83c62046c726f36daec7a28a335521f94b2561a6"
+		},
+		{
+			"ImportPath": "github.com/robfig/config",
+			"Rev": "0f78529c8c7e3e9a25f15876532ecbc07c7d99e6"
+		},
+		{
+			"ImportPath": "github.com/robfig/pathtree",
+			"Rev": "41257a1839e945fce74afd070e02bab2ea2c776a"
+		},
+		{
+			"ImportPath": "golang.org/x/net/websocket",
+			"Rev": "d9558e5c97f85372afee28cf2b6059d7d3818919"
+		},
+		{
+			"ImportPath": "gopkg.in/fsnotify.v1",
+			"Comment": "v1.2.0",
+			"Rev": "96c060f6a6b7e0d6f75fddd10efeaca3e5d1bcb0"
 		}
 	]
 }
