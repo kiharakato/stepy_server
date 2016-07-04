@@ -22,6 +22,4 @@ func CreateUser(uuid, email, name string) {
 
 	_db := open()
 	_db.Create(user)
-
-	print("通過")
 }
