@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"time"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"stepy/db"
+	"time"
 )
 
 type StatusJson struct {
@@ -27,7 +27,7 @@ func main() {
 	})
 
 	http.HandleFunc("/register", func(rw http.ResponseWriter, req *http.Request) {
-		if (req.Method == "POST") {
+		if req.Method == "POST" {
 			register(rw, req)
 			return
 		} else {

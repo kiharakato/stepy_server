@@ -15,7 +15,7 @@ type User struct {
 func CreateUser(uuid, email, name string) {
 	user := &User{
 		Email:     email,
-		Name:     name,
+		Name:      name,
 		UUID:      uuid,
 		CreatedAt: time.Now(),
 	}
