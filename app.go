@@ -1,8 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"time"
 	"encoding/json"
-	"github.com/go-martini/martini"
 	"net/http"
 	"stepy/db"
 )
@@ -13,15 +14,29 @@ type StatusJson struct {
 }
 
 func main() {
-	m := martini.Classic()
 
-	m.Get("/", func() string {
-		return "Hello world!"
+	http.HandleFunc("/ping", func(wr http.ResponseWriter, req *http.Request) {
+		wr.Header().Set("Content-Type", "application/json")
+		fmt.Fprintf(wr, `{"status": "ok, "date": %s }`, time.Now())
 	})
 
-	m.Post("/register", register)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `{"message": "hello stepy"}`)
+		return
+	})
 
-	m.Run()
+	http.HandleFunc("/register", func(rw http.ResponseWriter, req *http.Request) {
+		if (req.Method == "POST") {
+			register(rw, req)
+			return
+		} else {
+			http.NotFound(rw, req)
+			return
+		}
+	})
+
+	http.ListenAndServe(":5000", nil)
 }
 
 func okJson() string {

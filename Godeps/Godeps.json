@@ -4,16 +4,6 @@
 	"GodepVersion": "v60",
 	"Deps": [
 		{
-			"ImportPath": "github.com/codegangsta/inject",
-			"Comment": "v1.0-rc1-10-g33e0aa1",
-			"Rev": "33e0aa1cb7c019ccc3fbe049a8262a6403d30504"
-		},
-		{
-			"ImportPath": "github.com/go-martini/martini",
-			"Comment": "v1.0-115-g8412a65",
-			"Rev": "8412a652ddae77553a9442708a527d0e616939a3"
-		},
-		{
 			"ImportPath": "github.com/go-sql-driver/mysql",
 			"Comment": "v1.2-88-ga197e5d",
 			"Rev": "a197e5d40516f2e9f74dcee085a5f2d4604e94df"
