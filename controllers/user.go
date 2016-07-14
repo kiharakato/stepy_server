@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"io"
 	"net/http"
-	"net/url"
+	"github.com/satori/go.uuid"
 	stepyHttp "stepy/http"
+	_ "stepy/db"
 )
 
 type users struct {
@@ -22,7 +22,16 @@ type User struct {
 	address string `address: id`
 }
 
-func (u users) Get(url string, queries url.Values, body io.Reader) (stepyHttp.APIStatus, interface{}) {
+func (u users) Get(req *http.Request) (stepyHttp.APIStatus, interface{}) {
 	user := User{Id: "test", Email: "test.com", address: "test ken"}
+	return stepyHttp.Success(http.StatusOK), user
+}
+
+func (u users) Post(req *http.Request) (stepyHttp.APIStatus, interface{}) {
+	uuid := uuid.NewV4()
+	email := req.PostFormValue("email")
+	name_1 := req.PostFormValue("name")
+	user := User{Id: name_1, Email: email, address: uuid.String()}
+	//stepyDb.CreateUser(uuid, email)
 	return stepyHttp.Success(http.StatusOK), user
 }
