@@ -4,6 +4,7 @@ import (
 	"net/http"
 	stepyHttp "stepy/http"
 	"stepy/db"
+	"github.com/satori/go.uuid"
 )
 
 type users struct {
