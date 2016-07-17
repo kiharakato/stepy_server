@@ -20,7 +20,6 @@ func CreateUser(email, name string) interface{} {
 	user := &User{
 		Email: email,
 		Name:  name,
-		UUID:  CreateUuid(),
 	}
 
 	_db := open()
@@ -40,4 +39,9 @@ func ReadUserByUuid(uuid string) interface{} {
 	db.First(user, "uuid = ?", uuid)
 
 	return user
+}
+
+func (u *User) BeforeCreate() (err error) {
+	u.UUID = CreateUuid()
+	return
 }

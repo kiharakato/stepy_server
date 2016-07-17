@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	get = "GET"
+	get  = "GET"
 	post = "POST"
 )
 
