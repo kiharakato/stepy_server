@@ -1,8 +1,11 @@
 package db
 
 import (
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	"net/url"
+	"os"
 )
 
 type Database gorm.DB
@@ -41,5 +44,12 @@ func open() gorm.DB {
 }
 
 func (d Database) getConnectionString() string {
-	return "root@tcp([localhost]:3306)/stepy?parseTime=true"
+	var config = "b0b9f816ac0c4a:cd9775e9@tcp([localhost]:3306)/stepy?parseTime=true"
+
+	if os.Getenv("CLEARDB_DATABASE_URL") != "" {
+		url, _ := url.Parse(os.Getenv("CLEARDB_DATABASE_URL"))
+		config = fmt.Sprintf("%s@tcp(%s:3306)%s", url.User.String(), url.Host, url.Path)
+	}
+
+	return config
 }
