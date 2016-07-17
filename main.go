@@ -9,5 +9,5 @@ import (
 
 func main() {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
-	http.ListenAndServe(":"+port, nil)
+	http.ListenAndServe(":"+string(port), nil)
 }
