@@ -2,9 +2,12 @@ package main
 
 import (
 	"net/http"
+	"os"
 	_ "stepy/controllers"
+	"strconv"
 )
 
 func main() {
-	http.ListenAndServe(":5000", nil)
+	port, _ := strconv.Atoi(os.Getenv("PORT"))
+	http.ListenAndServe(":"+port, nil)
 }
