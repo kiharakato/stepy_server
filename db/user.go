@@ -1,19 +1,22 @@
 package db
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
 	"strings"
+	"time"
 )
 
 func init() {
 }
 
 type User struct {
-	gorm.Model
-	UUID  string `gorm:"suze:32;not null;unique_index", json:"uuid"`
-	Email string `json:"email"`
-	Name  string `gorm:"size:255", json:"name"`
+	ID        uint      `gorm:"primary_key" json:"id"`
+	Uuid      string    `gorm:"suze:32;not null;unique_index" json:"uuid"`
+	Email     string    `json:"email"`
+	Name      string    `gorm:"size:255" json:"name"`
+	CreatedAt time.Time `gorm:"not null" json:"created_at"`
+	UpdatedAt time.Time `gorm:"not null" json:"updated_at"`
+	DeletedAt time.Time `json:"deleted_at"`
 }
 
 func CreateUser(email, name string) interface{} {
@@ -24,24 +27,21 @@ func CreateUser(email, name string) interface{} {
 
 	_db := open()
 	_db.Create(user)
-	return _db.Value
-}
-
-func CreateUuid() string {
-	return strings.Replace(uuid.NewV1().String(), "-", "", -1)
-}
-
-func ReadUserByUuid(uuid string) interface{} {
-	db := open()
-	db.Select("SELECT * FROM user WHERE uuid = " + uuid)
-
-	var user User
-	db.First(user, "uuid = ?", uuid)
-
 	return user
 }
 
+func ReadUserByUuid(uuid string) interface{} {
+	var user User
+	db := open()
+	db.Where("uuid= ?", uuid).First(&user)
+	return user
+}
+
+func createUuid() string {
+	return strings.Replace(uuid.NewV1().String(), "-", "", -1)
+}
+
 func (u *User) BeforeCreate() (err error) {
-	u.UUID = CreateUuid()
+	u.Uuid = createUuid()
 	return
 }
