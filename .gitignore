@@ -27,4 +27,4 @@ _testmain.go
 # Created by .ignore support plugin (hsz.mobi)
 .idea
 server.iml
-vendor
+# vendor
