@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"net/http"
-	stepyHttp "stepy/http"
-	"stepy/db"
 	"github.com/satori/go.uuid"
+	"net/http"
+	"stepy/db"
+	stepyHttp "stepy/http"
 )
 
 type users struct {

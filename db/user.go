@@ -1,9 +1,9 @@
 package db
 
 import (
+	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
 	"strings"
-	"github.com/jinzhu/gorm"
 )
 
 func init() {
@@ -11,16 +11,16 @@ func init() {
 
 type User struct {
 	gorm.Model
-	UUID  string    `gorm:"suze:32;not null;unique_index", json:"uuid"`
-	Email string    `json:"email"`
-	Name  string    `gorm:"size:255", json:"name"`
+	UUID  string `gorm:"suze:32;not null;unique_index", json:"uuid"`
+	Email string `json:"email"`
+	Name  string `gorm:"size:255", json:"name"`
 }
 
 func CreateUser(email, name string) interface{} {
 	user := &User{
 		Email: email,
-		Name: name,
-		UUID: CreateUuid(),
+		Name:  name,
+		UUID:  CreateUuid(),
 	}
 
 	_db := open()

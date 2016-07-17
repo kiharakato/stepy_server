@@ -1,17 +1,17 @@
 package db
 
 import (
-	"time"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	"time"
 )
 
 type Database gorm.DB
 
 type Model struct {
-	ID        uint       `gorm:"primary_key"`
-	CreatedAt time.Time  `gorm:"not null", json:"created_at"`
-	UpdatedAt time.Time  `gorm:"not null", json:"updated_at"`
+	ID        uint      `gorm:"primary_key"`
+	CreatedAt time.Time `gorm:"not null", json:"created_at"`
+	UpdatedAt time.Time `gorm:"not null", json:"updated_at"`
 	DeletedAt time.Time
 }
 
