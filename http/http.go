@@ -59,13 +59,6 @@ type APIStatus struct {
 
 func APIResourceHandler(APIResource APIResource) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		//b := bytes.NewBuffer(make([]byte, 0))
-		//reader := io.TeeReader(r.Body, b)
-		//
-		//r.Body = ioutil.NopCloser(b)
-		//defer r.Body.Close()
-		//
-		//r.ParseForm()
 
 		var status APIStatus
 		var data interface{}
