@@ -1,10 +1,9 @@
 package controllers
 
 import (
-	"io"
 	"net/http"
-	"net/url"
 	stepyHttp "stepy/http"
+	"stepy/db"
 )
 
 type users struct {
@@ -12,17 +11,21 @@ type users struct {
 }
 
 func init() {
-	println("load controller / user")
 	http.Handle("/user", stepyHttp.Chain(stepyHttp.APIResourceHandler(users{})))
 }
 
-type User struct {
-	Id      string `json: id`
-	Email   string `email: id`
-	address string `address: id`
+func (u users) Get(req *http.Request) (stepyHttp.APIStatus, interface{}) {
+	if id, _ := stepyHttp.RequestGetParam(req, "id"); len(id) != 0 {
+		user := db.ReadUserByUuid(req.URL.Path)
+		return stepyHttp.Success(http.StatusOK), user
+	}
+
+	return stepyHttp.Fail(http.StatusNotFound, "invalid user id"), nil
 }
 
-func (u users) Get(url string, queries url.Values, body io.Reader) (stepyHttp.APIStatus, interface{}) {
-	user := User{Id: "test", Email: "test.com", address: "test ken"}
+func (u users) Post(req *http.Request) (stepyHttp.APIStatus, interface{}) {
+	email := req.PostFormValue("email")
+	name := req.PostFormValue("name")
+	user := db.CreateUser(email, name)
 	return stepyHttp.Success(http.StatusOK), user
 }

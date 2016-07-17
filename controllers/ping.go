@@ -7,7 +7,6 @@ import (
 )
 
 func init() {
-	println("load controller / ping")
 	http.HandleFunc("/ping", request)
 }
 

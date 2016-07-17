@@ -1,12 +1,9 @@
 package http
 
 import (
-	"bytes"
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"net/http"
-	"net/url"
 )
 
 const (
@@ -50,8 +47,8 @@ func chain(log, cors, validate bool, f func(w http.ResponseWriter, r *http.Reque
 }
 
 type APIResource interface {
-	Get(url string, queries url.Values, body io.Reader) (APIStatus, interface{})
-	Post(url string, queries url.Values, body io.Reader) (APIStatus, interface{})
+	Get(req *http.Request) (APIStatus, interface{})
+	Post(req *http.Request) (APIStatus, interface{})
 }
 
 type APIStatus struct {
@@ -62,22 +59,22 @@ type APIStatus struct {
 
 func APIResourceHandler(APIResource APIResource) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		b := bytes.NewBuffer(make([]byte, 0))
-		reader := io.TeeReader(r.Body, b)
-
-		r.Body = ioutil.NopCloser(b)
-		defer r.Body.Close()
-
-		r.ParseForm()
+		//b := bytes.NewBuffer(make([]byte, 0))
+		//reader := io.TeeReader(r.Body, b)
+		//
+		//r.Body = ioutil.NopCloser(b)
+		//defer r.Body.Close()
+		//
+		//r.ParseForm()
 
 		var status APIStatus
 		var data interface{}
 
 		switch r.Method {
 		case get:
-			status, data = APIResource.Get(r.URL.Path, r.Form, reader)
+			status, data = APIResource.Get(r)
 		case post:
-			status, data = APIResource.Post(r.URL.Path, r.Form, reader)
+			status, data = APIResource.Post(r)
 		default:
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			return
@@ -117,11 +114,11 @@ type apienvelope struct {
 
 type APIResourceBase struct{}
 
-func (APIResourceBase) Get(url string, queries url.Values, body io.Reader) (APIStatus, interface{}) {
+func (APIResourceBase) Get(req *http.Request) (APIStatus, interface{}) {
 	return APIStatus{success: false, code: http.StatusMethodNotAllowed, message: "server error"}, nil
 }
 
-func (APIResourceBase) Post(url string, queries url.Values, body io.Reader) (APIStatus, interface{}) {
+func (APIResourceBase) Post(req *http.Request) (APIStatus, interface{}) {
 	return APIStatus{success: false, code: http.StatusMethodNotAllowed, message: "server error"}, nil
 }
 

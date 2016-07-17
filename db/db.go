@@ -1,11 +1,31 @@
 package db
 
 import (
+	"time"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
 
 type Database gorm.DB
+
+type Model struct {
+	ID        uint       `gorm:"primary_key"`
+	CreatedAt time.Time  `gorm:"not null", json:"created_at"`
+	UpdatedAt time.Time  `gorm:"not null", json:"updated_at"`
+	DeletedAt time.Time
+}
+
+var db gorm.DB
+
+func init() {
+	db := open()
+
+	if (!db.HasTable(&User{})) {
+		db.CreateTable(&User{})
+	}
+
+	db.AutoMigrate(&User{})
+}
 
 func open() gorm.DB {
 	// 接続するための情報文字列を作る
@@ -13,14 +33,18 @@ func open() gorm.DB {
 	connectionString := d.getConnectionString()
 
 	// DB接続
-	db, err := gorm.Open("mysql", connectionString)
+	_db, err := gorm.Open("mysql", connectionString)
 	if err != nil {
 		panic(err)
 	}
-	db.DB()
+
+	_db.DB()
+	_db.LogMode(true)
+
+	db = _db
 	return db
 }
 
 func (d Database) getConnectionString() string {
-	return "root:root@tcp([localhost]:3306)/stepy?parseTime=true"
+	return "root@tcp([localhost]:3306)/stepy?parseTime=true"
 }
