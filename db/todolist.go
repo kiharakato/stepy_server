@@ -8,8 +8,7 @@ func init() {
 }
 
 type TodoList struct {
-	ID        uint `gorm:"primary_key" json:"id"`
-	Uuid      string
+	ID        uint       `gorm:"primary_key" json:"id"`
 	Title     string     `gorm:"size:255;not null" json:"title"`
 	TodoItems []TodoItem `json:"todo_items"`
 	CreatedAt time.Time  `gorm:"not null" json:"created_at"`
@@ -24,8 +23,14 @@ func CreateTodoList(title string) interface{} {
 	return list
 }
 
-func AddItemToList() interface{} {
+func AddItemToList(listId uint, item TodoItem) interface{} {
+	var list TodoList
+
 	db := open()
-	db.First()
-	return nil
+
+	db.Where("id = ?", listId).First(&list)
+	items := append(list.TodoItems, item)
+	db.Model(&list).Update("TodoItems", items)
+
+	return list
 }
