@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"stepy/db"
 	stepyHttp "stepy/http"
+	"strconv"
 )
 
 type lists struct {
@@ -21,8 +22,10 @@ func init() {
 
 func (l lists) Get(req *http.Request) (stepyHttp.APIStatus, interface{}) {
 	if id, _ := stepyHttp.RequestGetParam(req, "id"); len(id) != 0 {
-		user := db.ReadUserByUuid(id)
-		return stepyHttp.Success(http.StatusOK), user
+		if _id, err := strconv.ParseUint(id, 10, 32); err == nil {
+			list := db.ReadListByIdWithItems(uint(_id))
+			return stepyHttp.Success(http.StatusOK), list
+		}
 	}
 
 	return stepyHttp.Fail(http.StatusNotFound, "invalid user id"), nil

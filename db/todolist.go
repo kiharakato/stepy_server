@@ -34,3 +34,11 @@ func AddItemToList(listId uint, item TodoItem) interface{} {
 
 	return list
 }
+
+func ReadListByIdWithItems(listId uint) interface{} {
+	var list TodoList
+	db := open()
+	db.Where("id = ?", listId).First(&list)
+
+	return list
+}
