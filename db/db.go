@@ -21,8 +21,16 @@ func init() {
 	if (!db.HasTable(&User{})) {
 		db.CreateTable(&User{})
 	}
+	if (!db.HasTable(&TodoList{})) {
+		db.CreateTable(&TodoList{})
+	}
+	if (!db.HasTable(&TodoItem{})) {
+		db.CreateTable(&TodoItem{})
+	}
 
 	db.AutoMigrate(&User{})
+	db.AutoMigrate(&TodoList{})
+	db.AutoMigrate(&TodoItem{})
 }
 
 func open() gorm.DB {
@@ -44,7 +52,7 @@ func open() gorm.DB {
 }
 
 func (d Database) getConnectionString() string {
-	var config = "b0b9f816ac0c4a:cd9775e9@tcp([localhost]:3306)/stepy?parseTime=true"
+	var config = "root@tcp([localhost]:3306)/stepy?parseTime=true"
 
 	if os.Getenv("CLEARDB_DATABASE_URL") != "" {
 		url, _ := url.Parse(os.Getenv("CLEARDB_DATABASE_URL"))
