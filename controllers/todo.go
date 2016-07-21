@@ -32,8 +32,9 @@ func (l lists) Get(req *http.Request) (stepyHttp.APIStatus, interface{}) {
 }
 
 func (l lists) Post(req *http.Request) (stepyHttp.APIStatus, interface{}) {
+	userUuid := req.PostFormValue("uuid")
 	title := req.PostFormValue("title")
-	list := db.CreateTodoList(title)
+	list := db.CreateTodoList(title, userUuid)
 	return stepyHttp.Success(http.StatusOK), list
 }
 
@@ -47,7 +48,5 @@ func (i items) Get(req *http.Request) (stepyHttp.APIStatus, interface{}) {
 }
 
 func (i items) Post(req *http.Request) (stepyHttp.APIStatus, interface{}) {
-	title := req.PostFormValue("title")
-	list := db.CreateTodoList(title)
-	return stepyHttp.Success(http.StatusOK), list
+	return stepyHttp.Success(http.StatusOK), nil
 }

@@ -10,6 +10,7 @@ func init() {
 type TodoItem struct {
 	ID        uint      `gorm:"primary_key" json:"id"`
 	Title     string    `gorm:"size:255;not null" json:"name"`
+	ListID    uint      `json:"list_id"`
 	CreatedAt time.Time `gorm:"not null" json:"created_at"`
 	UpdatedAt time.Time `gorm:"not null" json:"updated_at"`
 }

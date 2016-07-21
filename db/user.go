@@ -17,7 +17,7 @@ type User struct {
 	TodoLists []TodoList `json:"group"`
 	CreatedAt time.Time  `gorm:"not null" json:"created_at"`
 	UpdatedAt time.Time  `gorm:"not null" json:"updated_at"`
-	DeletedAt time.Time  `json:"deleted_at"`
+	DeletedAt *time.Time `json:"deleted_at"`
 }
 
 func CreateUser(email, name string) interface{} {
