@@ -28,10 +28,14 @@ func init() {
 	if (!db.HasTable(&Item{})) {
 		db.CreateTable(&Item{})
 	}
+	if (!db.HasTable(&Device{})) {
+		db.CreateTable(&Device{})
+	}
 
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&NoteBook{})
 	db.AutoMigrate(&Item{})
+	db.AutoMigrate(&Device{})
 }
 
 func open() gorm.DB {

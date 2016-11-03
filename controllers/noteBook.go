@@ -7,20 +7,20 @@ import (
 	"strconv"
 )
 
-type lists struct {
+type noteBook struct {
 	stepyHttp.APIResourceBase
 }
 
-type items struct {
+type item struct {
 	stepyHttp.APIResourceBase
 }
 
 func init() {
-	http.Handle("/list/", stepyHttp.Chain(stepyHttp.APIResourceHandler(lists{})))
-	http.Handle("/list/item/", stepyHttp.Chain(stepyHttp.APIResourceHandler(items{})))
+	http.Handle("/note_book/", stepyHttp.Chain(stepyHttp.APIResourceHandler(noteBook{})))
+	http.Handle("/note_book/item/", stepyHttp.Chain(stepyHttp.APIResourceHandler(item{})))
 }
 
-func (l lists) Get(req *http.Request) (stepyHttp.APIStatus, interface{}) {
+func (l noteBook) Get(req *http.Request) (stepyHttp.APIStatus, interface{}) {
 	if id, _ := stepyHttp.RequestGetParam(req, "id"); len(id) != 0 {
 		if _id, err := strconv.ParseUint(id, 10, 32); err == nil {
 			list := db.ReadListByIdWithItems(uint(_id))
@@ -31,14 +31,14 @@ func (l lists) Get(req *http.Request) (stepyHttp.APIStatus, interface{}) {
 	return stepyHttp.Fail(http.StatusNotFound, "invalid user id"), nil
 }
 
-func (l lists) Post(req *http.Request) (stepyHttp.APIStatus, interface{}) {
+func (l noteBook) Post(req *http.Request) (stepyHttp.APIStatus, interface{}) {
 	userUuid := req.PostFormValue("uuid")
 	title := req.PostFormValue("title")
 	list := db.CreateNoteBook(title, userUuid)
 	return stepyHttp.Success(http.StatusOK), list
 }
 
-func (i items) Get(req *http.Request) (stepyHttp.APIStatus, interface{}) {
+func (i item) Get(req *http.Request) (stepyHttp.APIStatus, interface{}) {
 	if id, _ := stepyHttp.RequestGetParam(req, "id"); len(id) != 0 {
 		user := db.ReadUserByUuid(id)
 		return stepyHttp.Success(http.StatusOK), user
@@ -47,6 +47,6 @@ func (i items) Get(req *http.Request) (stepyHttp.APIStatus, interface{}) {
 	return stepyHttp.Fail(http.StatusNotFound, "invalid user id"), nil
 }
 
-func (i items) Post(req *http.Request) (stepyHttp.APIStatus, interface{}) {
+func (i item) Post(req *http.Request) (stepyHttp.APIStatus, interface{}) {
 	return stepyHttp.Success(http.StatusOK), nil
 }
