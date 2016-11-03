@@ -34,7 +34,7 @@ func (l lists) Get(req *http.Request) (stepyHttp.APIStatus, interface{}) {
 func (l lists) Post(req *http.Request) (stepyHttp.APIStatus, interface{}) {
 	userUuid := req.PostFormValue("uuid")
 	title := req.PostFormValue("title")
-	list := db.CreateTodoList(title, userUuid)
+	list := db.CreateNoteBook(title, userUuid)
 	return stepyHttp.Success(http.StatusOK), list
 }
 

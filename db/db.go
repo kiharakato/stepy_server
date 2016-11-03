@@ -21,16 +21,16 @@ func init() {
 	if (!db.HasTable(&User{})) {
 		db.CreateTable(&User{})
 	}
-	if (!db.HasTable(&TodoList{})) {
-		db.CreateTable(&TodoList{})
+	if (!db.HasTable(&NoteBook{})) {
+		db.CreateTable(&NoteBook{})
 	}
-	if (!db.HasTable(&TodoItem{})) {
-		db.CreateTable(&TodoItem{})
+	if (!db.HasTable(&Item{})) {
+		db.CreateTable(&Item{})
 	}
 
 	db.AutoMigrate(&User{})
-	db.AutoMigrate(&TodoList{})
-	db.AutoMigrate(&TodoItem{})
+	db.AutoMigrate(&NoteBook{})
+	db.AutoMigrate(&Item{})
 }
 
 func open() gorm.DB {
