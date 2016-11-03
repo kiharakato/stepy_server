@@ -1,10 +1,24 @@
 {
   "dev" : {
     "host": "localhost",
-    "port": "8080"
+    "port": "8080",
+    "db": {
+      "name": "stepy",
+      "host": "localhost",
+      "port": 3306,
+      "user": "root",
+      "protocol": "tcp"
+    }
   },
   "product": {
     "host": "stepy.com",
-    "port": ""
+    "port": "",
+    "db": {
+      "name": "stepy",
+      "host": "",
+      "port": 3306,
+      "user": "",
+      "protocol": "tcp"
+    }
   }
 }

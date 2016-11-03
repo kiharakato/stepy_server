@@ -15,6 +15,15 @@ type jsonConfig struct {
 type AppConfig struct {
 	Host string
 	Port string
+	Db   DbConfig
+}
+
+type DbConfig struct {
+	Name     string
+	Host     string
+	Port     int
+	User     string
+	Protocol string
 }
 
 var App AppConfig

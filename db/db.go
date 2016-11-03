@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"net/url"
 	"os"
+	"stepy/config"
 )
 
 type Database gorm.DB
@@ -52,12 +53,26 @@ func open() gorm.DB {
 }
 
 func (d Database) getConnectionString() string {
-	var config = "root@tcp([localhost]:3306)/stepy?parseTime=true"
+	var _config string
+	var format = "%s@%s([%s]:%d)/%s?parseTime=true"
 
 	if os.Getenv("CLEARDB_DATABASE_URL") != "" {
 		url, _ := url.Parse(os.Getenv("CLEARDB_DATABASE_URL"))
-		config = fmt.Sprintf("%s@tcp(%s:3306)%s", url.User.String(), url.Host, url.Path)
+		_config = fmt.Sprintf(format,
+			url.User.String(),
+			config.App.Db.Protocol,
+			url.Host,
+			config.App.Db.Port,
+			url.Path)
+	} else {
+		_config = fmt.Sprintf(format,
+			config.App.Db.User,
+			config.App.Db.Protocol,
+			config.App.Db.Host,
+			config.App.Db.Port,
+			config.App.Db.Name)
 	}
 
-	return config
+	fmt.Printf(_config)
+	return _config
 }
