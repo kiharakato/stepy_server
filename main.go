@@ -2,11 +2,10 @@ package main
 
 import (
 	"net/http"
-	"os"
+	"stepy/config"
 	_ "stepy/controllers"
 )
 
 func main() {
-	port := os.Getenv("PORT")
-	http.ListenAndServe(":"+port, nil)
+	http.ListenAndServe(":"+config.App.Port, nil)
 }
