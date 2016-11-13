@@ -122,3 +122,25 @@ func Success(code int) APIStatus {
 func Fail(code int, message string) APIStatus {
 	return APIStatus{success: false, code: code, message: message}
 }
+
+type Protocol struct {
+	Wr  http.ResponseWriter
+	Req *http.Request
+}
+
+func (p Protocol) Json(data []byte) {
+	p.Wr.Header().Set("Content-Type", "application/json")
+
+	content, e := json.Marshal(
+		apienvelope{
+			Header:   apiheader{Status: "success"},
+			Response: data,
+		})
+
+	if e != nil {
+		http.Error(p.Wr, e.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	p.Wr.Write(content)
+}

@@ -6,11 +6,7 @@ import (
 	"time"
 )
 
-func init() {
-	http.HandleFunc("/ping", request)
-}
-
-func request(wr http.ResponseWriter, req *http.Request) {
+func Ping(wr http.ResponseWriter, req *http.Request) {
 	wr.Header().Set("Content-Type", "application/json")
-	fmt.Fprintf(wr, `{"status": "ok, "date": %s }`, time.Now())
+	fmt.Fprintf(wr, `{"status": "ok", "date": %s }`, time.Now())
 }

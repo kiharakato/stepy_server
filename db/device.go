@@ -24,7 +24,7 @@ func CreateDevice(deviceId string) interface{} {
 	return device
 }
 
-func ReadDeviceByDeviceId(deviceId string) interface{} {
+func ReadDeviceById(deviceId string) interface{} {
 	var device Device
 	db := open()
 	db.Where("device_id= ?", deviceId).First(&device)
