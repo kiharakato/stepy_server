@@ -52,7 +52,9 @@ func (d Devices) get() {
 }
 
 func (d Devices) create() {
-	db.CreateDevice()
+	deviceId := d.Req.PostFormValue("device_id")
+	device := db.CreateDevice(deviceId)
+	d.Json(device)
 }
 
 func (d Devices) delete() {
@@ -62,18 +64,3 @@ func (d Devices) delete() {
 func (d Devices) update() {
 
 }
-
-//func (d Device) Get(req *http.Request) (stepyHttp.APIStatus, interface{}) {
-//	if id, _ := stepyHttp.RequestGetParam(req, "id"); len(id) != 0 {
-//		device := db.ReadDeviceByDeviceId(id)
-//		return stepyHttp.Success(http.StatusOK), device
-//	}
-//
-//	return stepyHttp.Fail(http.StatusNotFound, "invalid user id"), nil
-//}
-//
-//func (d Device) Post(req *http.Request) (stepyHttp.APIStatus, interface{}) {
-//	deviceId := req.PostFormValue("device_id")
-//	device := db.CreateDevice(deviceId)
-//	return stepyHttp.Success(http.StatusOK), device
-//}
