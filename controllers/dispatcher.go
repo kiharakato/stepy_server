@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"stepy/controllers/devices"
 	"strings"
+	"stepy/controllers/noteBooks"
 )
 
 func init() {
@@ -18,7 +19,11 @@ func dispatcher(wr http.ResponseWriter, req *http.Request) {
 	}
 
 	if strings.Index(url, "/devices") > -1 {
-		Devices.DevicesController(wr, req)
+		Devices.Controller(wr, req)
+	}
+
+	if strings.Index(url, "/notebooks") > -1 {
+		NoteBooks.Controller(wr, req)
 	}
 
 }

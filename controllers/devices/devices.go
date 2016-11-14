@@ -12,7 +12,7 @@ type Devices struct {
 	Id string
 }
 
-func DevicesController(wr http.ResponseWriter, req *http.Request) {
+func Controller(wr http.ResponseWriter, req *http.Request) {
 	regex := regexp.MustCompile(`/devices/(\d+/?)$`)
 	match := regex.FindSubmatch([]byte(req.URL.Path))
 
