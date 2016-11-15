@@ -5,6 +5,8 @@ import (
 	"stepy/controllers/devices"
 	"strings"
 	"stepy/controllers/noteBooks"
+	"fmt"
+	"time"
 )
 
 func init() {
@@ -26,4 +28,9 @@ func dispatcher(wr http.ResponseWriter, req *http.Request) {
 		NoteBooks.Controller(wr, req)
 	}
 
+}
+
+func Ping(wr http.ResponseWriter, req *http.Request) {
+	wr.Header().Set("Content-Type", "application/json")
+	fmt.Fprintf(wr, `{"status": "ok", "date": %s }`, time.Now())
 }
