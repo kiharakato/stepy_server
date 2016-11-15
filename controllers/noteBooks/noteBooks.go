@@ -17,7 +17,7 @@ func Controller(wr http.ResponseWriter, req *http.Request) {
 	regex := regexp.MustCompile(`/notebooks`)
 	match := regex.FindSubmatch([]byte(req.URL.Path))
 
-	notebook := Notebooks{sHttp.Protocol{Wr: wr, Req: req}}
+	notebook := Notebooks{sHttp.Protocol{Wr: wr, Req: req}, ""}
 
 	matchLen := len(match)
 	if matchLen == 0 {
@@ -51,7 +51,7 @@ func (n Notebooks) create() {
 	userUuid := n.Req.PostFormValue("uuid")
 	title := n.Req.PostFormValue("title")
 	list := db.CreateNoteBook(title, userUuid)
-	n.Json(list)
+	n.JsonWithInterface(list)
 
 }
 
@@ -67,14 +67,14 @@ func (n Notebooks) get() {
 	id := n.Req.URL.Query().Get("id")
 
 	if len(id) == 0 {
-		n.Json(nil)
+		n.JsonWithInterface(nil)
 	}
 
 	_id, err := strconv.ParseUint(id, 10, 32)
 	if err == nil {
-		n.Json(nil)
+		n.JsonWithInterface(nil)
 	}
 
 	notebook := db.ReadListByIdWithItems(uint(_id))
-	n.Json(notebook)
+	n.JsonWithInterface(notebook)
 }

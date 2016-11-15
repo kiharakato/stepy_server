@@ -1,9 +1,6 @@
 package NoteBooks
 
 import (
-	sHttp "stepy/http"
-	"net/http"
-	"stepy/db"
 )
 
 

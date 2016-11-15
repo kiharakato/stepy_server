@@ -16,7 +16,7 @@ func Controller(wr http.ResponseWriter, req *http.Request) {
 	regex := regexp.MustCompile(`/devices/(\d+/?)$`)
 	match := regex.FindSubmatch([]byte(req.URL.Path))
 
-	devices := Devices{sHttp.Protocol{Wr: wr, Req: req}}
+	devices := Devices{sHttp.Protocol{Wr: wr, Req: req}, ""}
 
 	matchLen := len(match)
 	if matchLen == 0 {
@@ -48,13 +48,13 @@ func (d Devices) list() {
 
 func (d Devices) get() {
 	device := db.ReadDeviceById(d.Id)
-	d.Json(device)
+	d.JsonWithInterface(device)
 }
 
 func (d Devices) create() {
 	deviceId := d.Req.PostFormValue("device_id")
 	device := db.CreateDevice(deviceId)
-	d.Json(device)
+	d.JsonWithInterface(device)
 }
 
 func (d Devices) delete() {

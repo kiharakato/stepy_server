@@ -128,6 +128,23 @@ type Protocol struct {
 	Req *http.Request
 }
 
+func (p Protocol) JsonWithInterface(data interface{}) {
+	p.Wr.Header().Set("Content-Type", "application/json")
+
+	content, e := json.Marshal(
+		apienvelope{
+			Header:   apiheader{Status: "success"},
+			Response: data,
+		})
+
+	if e != nil {
+		http.Error(p.Wr, e.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	p.Wr.Write(content)
+}
+
 func (p Protocol) Json(data []byte) {
 	p.Wr.Header().Set("Content-Type", "application/json")
 
