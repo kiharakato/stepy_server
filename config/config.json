@@ -8,6 +8,11 @@
       "port": 3306,
       "user": "root",
       "protocol": "tcp"
+    },
+    "session": {
+      "password": "",
+      "secret_key": "jgs9b6m6ic4xz8gw",
+      "session_key": "dstepy"
     }
   },
   "product": {
@@ -19,6 +24,11 @@
       "port": 3306,
       "user": "",
       "protocol": "tcp"
+    },
+    "session": {
+      "password": "7js32imh",
+      "secret_key": "thsjz4f4zzke4u6u",
+      "session_key": "stepy"
     }
   }
 }

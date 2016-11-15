@@ -16,6 +16,7 @@ type AppConfig struct {
 	Host string
 	Port string
 	Db   DbConfig
+	Session SessionConfig
 }
 
 type DbConfig struct {
@@ -24,6 +25,12 @@ type DbConfig struct {
 	Port     int
 	User     string
 	Protocol string
+}
+
+type SessionConfig struct {
+	Password string
+	SecretKey string `json:"secret_key"`
+	SessionKey string `json:"session_key"`
 }
 
 var App AppConfig
@@ -39,8 +46,8 @@ func init() {
 
 	App = config.Dev
 
-	var port = os.Getenv("PORT")
-	if port != "" {
+	var port = os.Getenv("GO_ENV")
+	if port != "DEV" {
 		App = config.Product
 		App.Port = port
 	}

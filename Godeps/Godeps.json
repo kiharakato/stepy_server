@@ -1,26 +1,40 @@
 {
 	"ImportPath": "stepy",
 	"GoVersion": "go1.7",
-	"GodepVersion": "v60",
+	"GodepVersion": "v74",
+	"Packages": [
+		"gopkg.in/boj/redistore.v1"
+	],
 	"Deps": [
 		{
-			"ImportPath": "github.com/go-sql-driver/mysql",
-			"Comment": "v1.2-88-ga197e5d",
-			"Rev": "a197e5d40516f2e9f74dcee085a5f2d4604e94df"
+			"ImportPath": "github.com/garyburd/redigo/internal",
+			"Comment": "v1.0.0-6-g80f7de3",
+			"Rev": "80f7de34463b0ed3d7c61303e5619efe1b227f92"
 		},
 		{
-			"ImportPath": "github.com/jinzhu/gorm",
-			"Rev": "25772352c2e1cb6a9c00472999015a32dd646218"
+			"ImportPath": "github.com/garyburd/redigo/redis",
+			"Comment": "v1.0.0-6-g80f7de3",
+			"Rev": "80f7de34463b0ed3d7c61303e5619efe1b227f92"
 		},
 		{
-			"ImportPath": "github.com/lib/pq/hstore",
-			"Comment": "go1.0-cutoff-47-g93e9980",
-			"Rev": "93e9980741c9e593411b94e07d5bad8cfb4809db"
+			"ImportPath": "github.com/gorilla/context",
+			"Comment": "v1.1-7-g08b5f42",
+			"Rev": "08b5f424b9271eedf6f9f0ce86cb9396ed337a42"
 		},
 		{
-			"ImportPath": "github.com/satori/go.uuid",
-			"Comment": "v1.1.0",
-			"Rev": "879c5887cd475cd7864858769793b2ceb0d44feb"
+			"ImportPath": "github.com/gorilla/securecookie",
+			"Comment": "v1.1-5-gfa5329f",
+			"Rev": "fa5329f913702981df43dcb2a380bac429c810b5"
+		},
+		{
+			"ImportPath": "github.com/gorilla/sessions",
+			"Comment": "v1.1",
+			"Rev": "ca9ada44574153444b00d3fd9c8559e4cc95f896"
+		},
+		{
+			"ImportPath": "gopkg.in/boj/redistore.v1",
+			"Comment": "v1.2",
+			"Rev": "fc113767cd6b051980f260d6dbe84b2740c46ab0"
 		}
 	]
 }

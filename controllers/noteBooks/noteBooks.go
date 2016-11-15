@@ -13,11 +13,11 @@ type Notebooks struct {
 	Id string
 }
 
-func Controller(wr http.ResponseWriter, req *http.Request) {
+func Controller(protocol sHttp.Protocol) {
 	regex := regexp.MustCompile(`/notebooks`)
-	match := regex.FindSubmatch([]byte(req.URL.Path))
+	match := regex.FindSubmatch([]byte(protocol.Req.URL.Path))
 
-	notebook := Notebooks{sHttp.Protocol{Wr: wr, Req: req}, ""}
+	notebook := Notebooks{protocol, ""}
 
 	matchLen := len(match)
 	if matchLen == 0 {
@@ -28,7 +28,7 @@ func Controller(wr http.ResponseWriter, req *http.Request) {
 	notebook.Id = string(match[1])
 	switch matchLen {
 	case 2:
-		switch req.Method {
+		switch protocol.Req.Method {
 		case http.MethodPost:
 			notebook.create()
 		case http.MethodDelete:
@@ -39,7 +39,7 @@ func Controller(wr http.ResponseWriter, req *http.Request) {
 			notebook.get()
 		}
 	default:
-		wr.WriteHeader(404)
+		protocol.Wr.WriteHeader(404)
 	}
 }
 
@@ -48,11 +48,14 @@ func (n Notebooks) list() {
 }
 
 func (n Notebooks) create() {
-	userUuid := n.Req.PostFormValue("uuid")
+	deviceId := n.Session.Values["device_id"]
+	str, ok := deviceId.(string)
+	if ok {
+		panic("cast fail")
+	}
 	title := n.Req.PostFormValue("title")
-	list := db.CreateNoteBook(title, userUuid)
+	list := db.CreateNoteBook(title, str)
 	n.JsonWithInterface(list)
-
 }
 
 func (n Notebooks) delete() {

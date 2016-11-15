@@ -14,8 +14,6 @@ type Database gorm.DB
 type Model struct {
 }
 
-var db gorm.DB
-
 func init() {
 	db := open()
 
@@ -38,7 +36,7 @@ func init() {
 	db.AutoMigrate(&Device{})
 }
 
-func open() gorm.DB {
+func open() *gorm.DB {
 	// 接続するための情報文字列を作る
 	d := Database{}
 	connectionString := d.getConnectionString()
@@ -52,8 +50,7 @@ func open() gorm.DB {
 	_db.DB()
 	_db.LogMode(true)
 
-	db = _db
-	return db
+	return _db
 }
 
 func (d Database) getConnectionString() string {
@@ -61,13 +58,13 @@ func (d Database) getConnectionString() string {
 	var format = "%s@%s([%s]:%d)/%s?parseTime=true"
 
 	if os.Getenv("CLEARDB_DATABASE_URL") != "" {
-		url, _ := url.Parse(os.Getenv("CLEARDB_DATABASE_URL"))
+		clearDBUrl, _ := url.Parse(os.Getenv("CLEARDB_DATABASE_URL"))
 		_config = fmt.Sprintf(format,
-			url.User.String(),
+			clearDBUrl.User.String(),
 			config.App.Db.Protocol,
-			url.Host,
+			clearDBUrl.Host,
 			config.App.Db.Port,
-			url.Path)
+			clearDBUrl.Path)
 	} else {
 		_config = fmt.Sprintf(format,
 			config.App.Db.User,
@@ -77,6 +74,5 @@ func (d Database) getConnectionString() string {
 			config.App.Db.Name)
 	}
 
-	fmt.Printf(_config)
 	return _config
 }

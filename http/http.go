@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"github.com/gorilla/sessions"
+	"fmt"
 )
 
 const (
@@ -126,6 +128,7 @@ func Fail(code int, message string) APIStatus {
 type Protocol struct {
 	Wr  http.ResponseWriter
 	Req *http.Request
+	Session *sessions.Session
 }
 
 func (p Protocol) JsonWithInterface(data interface{}) {
@@ -160,4 +163,11 @@ func (p Protocol) Json(data []byte) {
 	}
 
 	p.Wr.Write(content)
+}
+
+func (p Protocol) SessionSave() {
+	if err := p.Session.Save(p.Req, p.Wr); err != nil {
+		fmt.Printf("Error saving session: %v", err)
+		panic(err)
+	}
 }

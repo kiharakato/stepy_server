@@ -1,8 +1,6 @@
 package db
 
 import (
-	"github.com/satori/go.uuid"
-	"strings"
 	"time"
 )
 
@@ -14,8 +12,8 @@ type User struct {
 	Uuid      string     `gorm:"size:32;not null;unique_index" json:"uuid"`
 	Email     string     `json:"email"`
 	Name      string     `gorm:"size:255" json:"name"`
-	CreatedAt time.Time  `gorm:"not null" json:"created_at"`
-	UpdatedAt time.Time  `gorm:"not null" json:"updated_at"`
+	CreatedAt time.Time  `gorm:"not null default CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt time.Time  `gorm:"not null default CURRENT_TIMESTAMP" json:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at"`
 }
 
@@ -35,13 +33,4 @@ func ReadUserByUuid(uuid string) interface{} {
 	db := open()
 	db.Where("uuid= ?", uuid).First(&user)
 	return user
-}
-
-func createUuid() string {
-	return strings.Replace(uuid.NewV1().String(), "-", "", -1)
-}
-
-func (u *User) BeforeCreate() (err error) {
-	u.Uuid = createUuid()
-	return
 }

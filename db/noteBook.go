@@ -11,18 +11,17 @@ type NoteBook struct {
 	ID        uint       `gorm:"primary_key" json:"id"`
 	Title     string     `gorm:"size:255;not null" json:"title"`
 	UserID    uint       `gorm:"not null" json:"user_id"`
-	CreatedAt time.Time  `gorm:"not null" json:"created_at"`
-	UpdatedAt time.Time  `gorm:"not null" json:"updated_at"`
+	DeviceID  string     `gorm:"not null" json:"device_id"`
+	CreatedAt time.Time  `gorm:"not null default CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt time.Time  `gorm:"not null default CURRENT_TIMESTAMP" json:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at"`
 }
 
-func CreateNoteBook(title string, uuid string) interface{} {
-	var user User
+func CreateNoteBook(title string, deviceId string) NoteBook {
 	db := open()
-	db.Where("uuid = ?", uuid).First(&user)
-	noteBook := &NoteBook{
+	noteBook := NoteBook{
 		Title:  title,
-		UserID: user.ID,
+		DeviceID: deviceId,
 	}
 	db.Create(noteBook)
 	return noteBook

@@ -12,8 +12,8 @@ type Item struct {
 	Title     string     `gorm:"size:255;not null" json:"name"`
 	ListID    uint       `json:"list_id"`
 	State     string     `gorm:"size:32;not null"`
-	CreatedAt time.Time  `gorm:"not null" json:"created_at"`
-	UpdatedAt time.Time  `gorm:"not null" json:"updated_at"`
+	CreatedAt time.Time  `gorm:"not null default CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt time.Time  `gorm:"not null default CURRENT_TIMESTAMP" json:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at"`
 }
 
