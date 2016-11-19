@@ -36,7 +36,17 @@ func init() {
 	db.AutoMigrate(&Device{})
 }
 
-func open() *gorm.DB {
+type SDB struct {
+	*gorm.DB
+}
+
+var DB SDB
+
+func open() SDB {
+	if DB.DB != nil {
+		return DB
+	}
+
 	// 接続するための情報文字列を作る
 	d := Database{}
 	connectionString := d.getConnectionString()
@@ -50,7 +60,8 @@ func open() *gorm.DB {
 	_db.DB()
 	_db.LogMode(true)
 
-	return _db
+	DB = SDB{_db}
+	return DB
 }
 
 func (d Database) getConnectionString() string {

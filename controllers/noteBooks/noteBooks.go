@@ -2,10 +2,10 @@ package NoteBooks
 
 import (
 	"net/http"
+	"regexp"
 	"stepy/db"
 	sHttp "stepy/http"
 	"strconv"
-	"regexp"
 )
 
 type Notebooks struct {
@@ -50,9 +50,10 @@ func (n Notebooks) list() {
 func (n Notebooks) create() {
 	deviceId := n.Session.Values["device_id"]
 	str, ok := deviceId.(string)
-	if ok {
+	if !ok {
 		panic("cast fail")
 	}
+
 	title := n.Req.PostFormValue("title")
 	list := db.CreateNoteBook(title, str)
 	n.JsonWithInterface(list)

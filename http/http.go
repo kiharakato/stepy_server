@@ -2,10 +2,11 @@ package http
 
 import (
 	"encoding/json"
+	"fmt"
+	"github.com/gorilla/sessions"
 	"io"
 	"net/http"
-	"github.com/gorilla/sessions"
-	"fmt"
+	"stepy/db"
 )
 
 const (
@@ -126,12 +127,14 @@ func Fail(code int, message string) APIStatus {
 }
 
 type Protocol struct {
-	Wr  http.ResponseWriter
-	Req *http.Request
+	Wr      http.ResponseWriter
+	Req     *http.Request
 	Session *sessions.Session
+	DB      db.SDB
 }
 
 func (p Protocol) JsonWithInterface(data interface{}) {
+	defer p.Finally()
 	p.Wr.Header().Set("Content-Type", "application/json")
 
 	content, e := json.Marshal(
@@ -149,6 +152,7 @@ func (p Protocol) JsonWithInterface(data interface{}) {
 }
 
 func (p Protocol) Json(data []byte) {
+	defer p.Finally()
 	p.Wr.Header().Set("Content-Type", "application/json")
 
 	content, e := json.Marshal(
@@ -163,6 +167,10 @@ func (p Protocol) Json(data []byte) {
 	}
 
 	p.Wr.Write(content)
+}
+
+func (p Protocol) Finally() {
+	p.DB.Close()
 }
 
 func (p Protocol) SessionSave() {

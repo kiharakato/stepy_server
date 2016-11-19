@@ -13,14 +13,19 @@ type Devices struct {
 }
 
 func Controller(protocol sHttp.Protocol) {
-	regex := regexp.MustCompile(`/devices/(\d+/?)$`)
+	regex := regexp.MustCompile(`/devices(/\d+/?)$`)
 	match := regex.FindSubmatch([]byte(protocol.Req.URL.Path))
 
 	devices := Devices{protocol, ""}
-
 	matchLen := len(match)
+
 	if matchLen == 0 {
-		devices.list()
+		switch protocol.Req.Method {
+		case http.MethodPost:
+			devices.create()
+		default:
+			devices.list()
+		}
 		return
 	}
 
@@ -28,10 +33,6 @@ func Controller(protocol sHttp.Protocol) {
 	switch matchLen {
 	case 2:
 		switch protocol.Req.Method {
-		case http.MethodPost:
-			devices.create()
-		case http.MethodDelete:
-			devices.delete()
 		case http.MethodPut:
 			devices.update()
 		default:
@@ -52,10 +53,15 @@ func (d Devices) get() {
 }
 
 func (d Devices) create() {
-	deviceUniqId := d.Req.PostFormValue("device_id")
-	device := db.CreateDevice(deviceUniqId)
+	uniqueId := d.Req.PostFormValue("unique_id")
+	if len(uniqueId) == 0 {
+		d.JsonWithInterface(nil)
+		return
+	}
 
-	d.Session.Values["device_id"] = device.ID
+	device := d.DB.CreateDevice(uniqueId)
+
+	d.Session.Values["unique_id"] = device.ID
 	d.SessionSave()
 
 	d.JsonWithInterface(device)

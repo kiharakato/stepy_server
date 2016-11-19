@@ -1,15 +1,16 @@
 package controllers
 
 import (
+	"fmt"
+	resisSession "gopkg.in/boj/redistore.v1"
 	"net/http"
+	"stepy/config"
 	"stepy/controllers/devices"
 	"stepy/controllers/noteBooks"
-	resisSession "gopkg.in/boj/redistore.v1"
-	"strings"
-	"fmt"
-	"time"
+	"stepy/db"
 	sHttp "stepy/http"
-	"stepy/config"
+	"strings"
+	"time"
 )
 
 func init() {
@@ -30,7 +31,7 @@ func dispatcher(wr http.ResponseWriter, req *http.Request) {
 		panic(err)
 	}
 
-	protocol := sHttp.Protocol{Wr: wr, Req: req, Session: session}
+	protocol := sHttp.Protocol{Wr: wr, Req: req, Session: session, DB: db.DB}
 
 	if strings.Index(url, "/ping") > -1 {
 		Ping(protocol)
@@ -51,4 +52,5 @@ func Ping(protocol sHttp.Protocol) {
 	protocol.Session.Values["test"] = "かみちゅ"
 	protocol.SessionSave()
 	fmt.Fprintf(protocol.Wr, `{"status": "ok", "date": %s }`, time.Now())
+	protocol.Finally()
 }
