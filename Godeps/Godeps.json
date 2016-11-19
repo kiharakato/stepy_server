@@ -1,10 +1,7 @@
 {
 	"ImportPath": "stepy",
 	"GoVersion": "go1.7",
-	"GodepVersion": "v74",
-	"Packages": [
-		"gopkg.in/boj/redistore.v1"
-	],
+	"GodepVersion": "v75",
 	"Deps": [
 		{
 			"ImportPath": "github.com/garyburd/redigo/internal",
@@ -15,6 +12,11 @@
 			"ImportPath": "github.com/garyburd/redigo/redis",
 			"Comment": "v1.0.0-6-g80f7de3",
 			"Rev": "80f7de34463b0ed3d7c61303e5619efe1b227f92"
+		},
+		{
+			"ImportPath": "github.com/go-sql-driver/mysql",
+			"Comment": "v1.2-88-ga197e5d",
+			"Rev": "a197e5d40516f2e9f74dcee085a5f2d4604e94df"
 		},
 		{
 			"ImportPath": "github.com/gorilla/context",
@@ -30,6 +32,14 @@
 			"ImportPath": "github.com/gorilla/sessions",
 			"Comment": "v1.1",
 			"Rev": "ca9ada44574153444b00d3fd9c8559e4cc95f896"
+		},
+		{
+			"ImportPath": "github.com/jinzhu/gorm",
+			"Rev": "25772352c2e1cb6a9c00472999015a32dd646218"
+		},
+		{
+			"ImportPath": "github.com/jinzhu/inflection",
+			"Rev": "74387dc39a75e970e7a3ae6a3386b5bd2e5c5cff"
 		},
 		{
 			"ImportPath": "gopkg.in/boj/redistore.v1",
