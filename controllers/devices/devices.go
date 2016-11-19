@@ -1,9 +1,10 @@
 package Devices
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 	"regexp"
-	"stepy/db"
 	sHttp "stepy/http"
 )
 
@@ -13,7 +14,7 @@ type Devices struct {
 }
 
 func Controller(protocol sHttp.Protocol) {
-	regex := regexp.MustCompile(`/devices(/\d+/?)$`)
+	regex := regexp.MustCompile(`/devices/(\d+/?)$`)
 	match := regex.FindSubmatch([]byte(protocol.Req.URL.Path))
 
 	devices := Devices{protocol, ""}
@@ -48,18 +49,30 @@ func (d Devices) list() {
 }
 
 func (d Devices) get() {
-	device := db.ReadDeviceById(d.Id)
+	device, err := d.DB.FindDeviceById(d.Id)
+	if err != nil {
+		fmt.Println(err.Error())
+		d.Error(http.StatusNotFound, nil)
+		return
+	}
+
 	d.JsonWithInterface(device)
 }
 
 func (d Devices) create() {
 	uniqueId := d.Req.PostFormValue("unique_id")
-	if len(uniqueId) == 0 {
-		d.JsonWithInterface(nil)
+
+	if uniqueId == "" {
+		d.Error(http.StatusBadRequest, errors.New("invald arg."))
 		return
 	}
 
-	device := d.DB.CreateDevice(uniqueId)
+	device, err := d.DB.CreateDevice(uniqueId)
+	if err != nil {
+		fmt.Println(err.Error())
+		d.Error(http.StatusBadRequest, nil)
+		return
+	}
 
 	d.Session.Values["unique_id"] = device.ID
 	d.SessionSave()

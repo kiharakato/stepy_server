@@ -16,22 +16,23 @@ type Device struct {
 	DeletedAt *time.Time `json:"deleted_at"`
 }
 
-func (db SDB) CreateDevice(uniqueId string) Device {
+func (db SDB) CreateDevice(uniqueId string) (Device, error) {
+	tx := db.Begin()
 	device := Device{UniqueId: uniqueId}
 
-	db.Create(&device)
-
-	if db.NewRecord(&device) {
-		println(db.Error.Error())
-		return device
+	if err := db.Create(&device).Error; err != nil {
+		tx.Rollback()
+		return device, err
 	}
 
-	return device
+	tx.Commit()
+	return device, nil
 }
 
-func ReadDeviceById(deviceId string) Device {
+func (db SDB) FindDeviceById(deviceId string) (Device, error) {
 	var device Device
-	db := open()
-	db.Where("device_id= ?", deviceId).First(&device)
-	return device
+	if err := db.Where("id=?", deviceId).First(&device).Error; err != nil {
+		return device, err
+	}
+	return device, nil
 }

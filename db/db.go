@@ -16,12 +16,13 @@ type Model struct {
 
 func init() {
 	db := open()
+	defer db.Close()
 
 	if (!db.HasTable(&User{})) {
 		db.CreateTable(&User{})
 	}
-	if (!db.HasTable(&NoteBook{})) {
-		db.CreateTable(&NoteBook{})
+	if (!db.HasTable(&Notebook{})) {
+		db.CreateTable(&Notebook{})
 	}
 	if (!db.HasTable(&Item{})) {
 		db.CreateTable(&Item{})
@@ -31,7 +32,7 @@ func init() {
 	}
 
 	db.AutoMigrate(&User{})
-	db.AutoMigrate(&NoteBook{})
+	db.AutoMigrate(&Notebook{})
 	db.AutoMigrate(&Item{})
 	db.AutoMigrate(&Device{})
 }
@@ -40,13 +41,11 @@ type SDB struct {
 	*gorm.DB
 }
 
-var DB SDB
+func NewDB() SDB {
+	return open()
+}
 
 func open() SDB {
-	if DB.DB != nil {
-		return DB
-	}
-
 	// 接続するための情報文字列を作る
 	d := Database{}
 	connectionString := d.getConnectionString()
@@ -60,8 +59,8 @@ func open() SDB {
 	_db.DB()
 	_db.LogMode(true)
 
-	DB = SDB{_db}
-	return DB
+	db := SDB{_db}
+	return db
 }
 
 func (d Database) getConnectionString() string {

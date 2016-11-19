@@ -31,7 +31,13 @@ func dispatcher(wr http.ResponseWriter, req *http.Request) {
 		panic(err)
 	}
 
-	protocol := sHttp.Protocol{Wr: wr, Req: req, Session: session, DB: db.DB}
+	protocol := sHttp.Protocol{
+		Wr:      wr,
+		Req:     req,
+		Session: session,
+		DB:      db.NewDB(),
+	}
+	defer protocol.DB.Close()
 
 	if strings.Index(url, "/ping") > -1 {
 		Ping(protocol)
@@ -52,5 +58,4 @@ func Ping(protocol sHttp.Protocol) {
 	protocol.Session.Values["test"] = "かみちゅ"
 	protocol.SessionSave()
 	fmt.Fprintf(protocol.Wr, `{"status": "ok", "date": %s }`, time.Now())
-	protocol.Finally()
 }

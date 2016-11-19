@@ -2,6 +2,7 @@ package http
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/gorilla/sessions"
 	"io"
@@ -133,8 +134,19 @@ type Protocol struct {
 	DB      db.SDB
 }
 
+type ApiErrorStatus struct {
+	error error
+	code  int
+}
+
+func (p Protocol) Error(code int, err error) {
+	if err == nil {
+		err = errors.New("")
+	}
+	http.Error(p.Wr, err.Error(), code)
+}
+
 func (p Protocol) JsonWithInterface(data interface{}) {
-	defer p.Finally()
 	p.Wr.Header().Set("Content-Type", "application/json")
 
 	content, e := json.Marshal(
@@ -152,7 +164,6 @@ func (p Protocol) JsonWithInterface(data interface{}) {
 }
 
 func (p Protocol) Json(data []byte) {
-	defer p.Finally()
 	p.Wr.Header().Set("Content-Type", "application/json")
 
 	content, e := json.Marshal(
@@ -167,10 +178,6 @@ func (p Protocol) Json(data []byte) {
 	}
 
 	p.Wr.Write(content)
-}
-
-func (p Protocol) Finally() {
-	p.DB.Close()
 }
 
 func (p Protocol) SessionSave() {
