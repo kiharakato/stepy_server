@@ -1,3 +1,5 @@
+/gin-bin
+/README_PRODUCTION.md
 ### Go template
 # Compiled Object files, Static and Dynamic libs (Shared Objects)
 *.o
