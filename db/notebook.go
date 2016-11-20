@@ -43,3 +43,11 @@ func (db SDB) FindListByIdWithItems(listId string) (interface{}, error) {
 	}
 	return note, nil
 }
+
+func (db SDB) FindAllNotebooksByDeviceId(deviceId string) ([]Notebook, error) {
+	var notebooks []Notebook
+	if err := db.Where("device_id=?", deviceId).Find(notebooks).Error; err != nil {
+		return notebooks, err
+	}
+	return notebooks, nil
+}

@@ -46,7 +46,17 @@ func Controller(protocol sHttp.Protocol) {
 }
 
 func (n Notebooks) list() {
+	deviceId, ok := n.Session.Values["device_id"].(string)
+	if !ok {
+		n.Error(http.StatusBadRequest, errors.New("invalid arg."))
+	}
 
+	notebooks, err := n.DB.FindAllNotebooksByDeviceId(deviceId)
+	if err != nil {
+		n.Error(http.StatusBadRequest, nil)
+	}
+
+	n.JsonWithInterface(notebooks)
 }
 
 func (n Notebooks) create() {
