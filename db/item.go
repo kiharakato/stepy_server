@@ -36,3 +36,22 @@ func (db SDB) AddItemToNoteBook(notebookId uint, itemTitle string) (Item, error)
 	tx.Commit()
 	return item, nil
 }
+
+func (db SDB) UpdateItems(itemId, title, state string) (Item, error) {
+	var item Item
+
+	option := map[string]interface{}{}
+	if title != "" {
+		option["title"] = title
+	}
+	if state != "" {
+		option["state"] = state
+	}
+
+	err := db.Model(&item).Where("id=?", itemId).Updates(option).Error
+	if err != nil {
+		return item, err
+	}
+
+	return item, nil
+}

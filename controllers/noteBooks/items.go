@@ -19,6 +19,8 @@ func ItemsController(notebook Notebooks) {
 	switch notebook.Req.Method {
 	case http.MethodPost:
 		items.create()
+	case http.MethodPut:
+		items.update()
 	default:
 		notebook.Wr.WriteHeader(404)
 	}
@@ -42,6 +44,19 @@ func (i Items) create() {
 	if err != nil {
 		fmt.Println(err.Error())
 		i.Error(http.StatusBadRequest, nil)
+		return
+	}
+
+	i.JsonWithInterface(item)
+}
+
+func (i Items) update() {
+	title := i.Req.PostFormValue("title")
+	state := i.Req.PostFormValue("state")
+
+	item, err := i.DB.UpdateItems(i.ItemId, title, state)
+	if err != nil {
+		i.Error(http.StatusInternalServerError, nil)
 		return
 	}
 
