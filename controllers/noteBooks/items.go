@@ -27,7 +27,7 @@ func ItemsController(notebook Notebooks) {
 }
 
 func (i Items) create() {
-	_, ok := i.Session.Values["device_id"].(string)
+	_, ok := i.Session.Values["device_id"].(uint)
 	if !ok {
 		i.Error(http.StatusBadRequest, errors.New("invalid arg."))
 		return

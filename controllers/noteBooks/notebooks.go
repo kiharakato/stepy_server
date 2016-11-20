@@ -19,7 +19,6 @@ func Controller(protocol sHttp.Protocol) {
 	paths := strings.Split(url, "/")
 	notebook := Notebooks{Protocol: protocol, Id: "", Items: Items{}}
 
-	fmt.Println(len(paths))
 	switch len(paths) {
 	case 1:
 		switch protocol.Req.Method {
@@ -49,7 +48,7 @@ func Controller(protocol sHttp.Protocol) {
 }
 
 func (n Notebooks) list() {
-	deviceId, ok := n.Session.Values["device_id"].(string)
+	deviceId, ok := n.Session.Values["device_id"].(uint)
 	if !ok {
 		n.Error(http.StatusBadRequest, errors.New("invalid arg."))
 	}
@@ -63,7 +62,7 @@ func (n Notebooks) list() {
 }
 
 func (n Notebooks) create() {
-	deviceId, ok := n.Session.Values["device_id"].(string)
+	deviceId, ok := n.Session.Values["device_id"].(uint)
 	if !ok {
 		n.Error(http.StatusBadRequest, errors.New("invalid arg."))
 		return
@@ -94,7 +93,7 @@ func (n Notebooks) update() {
 }
 
 func (n Notebooks) get() {
-	_, ok := n.Session.Values["device_id"].(string)
+	_, ok := n.Session.Values["device_id"].(uint)
 	if !ok {
 		n.Error(http.StatusBadRequest, errors.New("invalid arg."))
 		return
