@@ -4,25 +4,27 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	sHttp "stepy/http"
 	"strconv"
 )
 
 type Items struct {
-	Id     string
 	ItemId string
-	sHttp.Protocol
+	Notebooks
 }
 
-func ItemsController(notebook Notebooks) {
-	items := notebook.Items
-	switch notebook.Req.Method {
-	case http.MethodPost:
+func (notebooks Notebooks) ItemsController(paths []string) {
+	items := Items{
+		Notebooks: notebooks,
+		ItemId:    "",
+	}
+
+	switch len(paths) {
+	case 3:
 		items.create()
-	case http.MethodPut:
+	case 4:
 		items.update()
 	default:
-		notebook.Wr.WriteHeader(404)
+		items.Wr.WriteHeader(404)
 	}
 }
 

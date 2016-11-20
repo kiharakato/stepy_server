@@ -9,15 +9,14 @@ import (
 )
 
 type Notebooks struct {
-	sHttp.Protocol
 	Id string
-	Items
+	sHttp.Protocol
 }
 
 func Controller(protocol sHttp.Protocol) {
 	url := strings.Replace(protocol.Req.URL.Path, "/", "", 1)
 	paths := strings.Split(url, "/")
-	notebook := Notebooks{Protocol: protocol, Id: "", Items: Items{}}
+	notebook := Notebooks{Protocol: protocol, Id: ""}
 
 	switch len(paths) {
 	case 1:
@@ -35,13 +34,13 @@ func Controller(protocol sHttp.Protocol) {
 		default:
 			protocol.Wr.WriteHeader(404)
 		}
-	case 4:
-		if paths[2] == "items" {
+	case 3, 4:
+		notebook.Id = paths[1]
+		if paths[2] != "items" {
 			protocol.Wr.WriteHeader(404)
 			return
 		}
-		notebook.ItemId = paths[3]
-		ItemsController(notebook)
+		notebook.ItemsController(paths)
 	default:
 		protocol.Wr.WriteHeader(404)
 	}
@@ -51,6 +50,7 @@ func (n Notebooks) list() {
 	deviceId, ok := n.Session.Values["device_id"].(uint)
 	if !ok {
 		n.Error(http.StatusBadRequest, errors.New("invalid arg."))
+		return
 	}
 
 	notebooks, err := n.DB.FindAllNotebooksByDeviceId(deviceId)
