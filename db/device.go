@@ -17,15 +17,21 @@ type Device struct {
 }
 
 func (db SDB) CreateDevice(uniqueId string) (Device, error) {
-	tx := db.Begin()
-	device := Device{UniqueId: uniqueId}
+	var device Device
 
+	db.Where("unique_id=?", uniqueId).First(&device)
+	if device != (Device{}) {
+		return device, nil
+	}
+
+	tx := db.Begin()
+	device = Device{UniqueId: uniqueId}
 	if err := db.Create(&device).Error; err != nil {
 		tx.Rollback()
 		return device, err
 	}
-
 	tx.Commit()
+
 	return device, nil
 }
 

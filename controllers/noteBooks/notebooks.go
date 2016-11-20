@@ -15,23 +15,26 @@ type Notebooks struct {
 }
 
 func Controller(protocol sHttp.Protocol) {
-	paths := strings.Split(protocol.Req.URL.Path, "/")
+	url := strings.Replace(protocol.Req.URL.Path, "/", "", 1)
+	paths := strings.Split(url, "/")
 	notebook := Notebooks{Protocol: protocol, Id: "", Items: Items{}}
 
+	fmt.Println(len(paths))
 	switch len(paths) {
-	case 0, 1:
-		notebook.list()
-	case 2:
-		notebook.Id = paths[1]
+	case 1:
 		switch protocol.Req.Method {
 		case http.MethodPost:
 			notebook.create()
-		case http.MethodDelete:
-			notebook.delete()
+		default:
+			protocol.Wr.WriteHeader(404)
+		}
+	case 2:
+		notebook.Id = paths[1]
+		switch protocol.Req.Method {
 		case http.MethodPut:
 			notebook.update()
 		default:
-			notebook.get()
+			protocol.Wr.WriteHeader(404)
 		}
 	case 4:
 		if paths[2] == "items" {

@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"regexp"
 	sHttp "stepy/http"
+	"strings"
 )
 
 type Devices struct {
@@ -14,30 +14,27 @@ type Devices struct {
 }
 
 func Controller(protocol sHttp.Protocol) {
-	regex := regexp.MustCompile(`/devices/(\d+/?)$`)
-	match := regex.FindSubmatch([]byte(protocol.Req.URL.Path))
+	url := strings.Replace(protocol.Req.URL.Path, "/", "", 1)
+	paths := strings.Split(url, "/")
 
 	devices := Devices{protocol, ""}
-	matchLen := len(match)
+	method := protocol.Req.Method
 
-	if matchLen == 0 {
-		switch protocol.Req.Method {
+	switch len(paths) {
+	case 1:
+		switch method {
 		case http.MethodPost:
 			devices.create()
 		default:
-			devices.list()
+			protocol.Wr.WriteHeader(404)
 		}
-		return
-	}
-
-	devices.Id = string(match[1])
-	switch matchLen {
 	case 2:
-		switch protocol.Req.Method {
+		devices.Id = string(paths[1])
+		switch method {
 		case http.MethodPut:
 			devices.update()
 		default:
-			devices.get()
+			protocol.Wr.WriteHeader(404)
 		}
 	default:
 		protocol.Wr.WriteHeader(404)
@@ -74,7 +71,7 @@ func (d Devices) create() {
 		return
 	}
 
-	d.Session.Values["unique_id"] = device.ID
+	d.Session.Values["device_id"] = device.ID
 	d.SessionSave()
 
 	d.JsonWithInterface(device)
