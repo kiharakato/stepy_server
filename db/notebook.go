@@ -15,7 +15,7 @@ type Notebook struct {
 	CreatedAt time.Time  `gorm:"not null; default: CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time  `gorm:"not null; default: CURRENT_TIMESTAMP" json:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at"`
-	Items     []Item     `gorm:"-"`
+	Items     []Item
 }
 
 func (db SDB) CreateNotebook(title string, deviceId uint) (Notebook, error) {
@@ -46,8 +46,17 @@ func (db SDB) FindListByIdWithItems(listId string) (interface{}, error) {
 
 func (db SDB) FindAllNotebooksByDeviceId(deviceId uint) ([]Notebook, error) {
 	var notebooks []Notebook
-	if err := db.Where("device_id=?", deviceId).Find(notebooks).Error; err != nil {
+	if err := db.Where("device_id = ?", deviceId).Find(&notebooks).Error; err != nil {
 		return notebooks, err
 	}
+
+	for i := range notebooks {
+		var items []Item
+		if err := db.Where("notebook_id = ?", notebooks[i].ID).Find(&items).Error; err != nil {
+			return notebooks, err
+		}
+		notebooks[i].Items = items
+	}
+
 	return notebooks, nil
 }

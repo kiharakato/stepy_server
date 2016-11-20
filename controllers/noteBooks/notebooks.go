@@ -23,6 +23,8 @@ func Controller(protocol sHttp.Protocol) {
 		switch protocol.Req.Method {
 		case http.MethodPost:
 			notebook.create()
+		case http.MethodGet:
+			notebook.list()
 		default:
 			protocol.Wr.WriteHeader(404)
 		}
