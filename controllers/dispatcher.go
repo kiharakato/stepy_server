@@ -55,7 +55,5 @@ func dispatcher(wr http.ResponseWriter, req *http.Request) {
 
 func Ping(protocol sHttp.Protocol) {
 	protocol.Wr.Header().Set("Content-Type", "application/json")
-	protocol.Session.Values["test"] = "かみちゅ"
-	protocol.SessionSave()
 	fmt.Fprintf(protocol.Wr, `{"status": "ok", "date": %s }`, time.Now())
 }
