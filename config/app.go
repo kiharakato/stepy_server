@@ -13,9 +13,10 @@ type jsonConfig struct {
 }
 
 type AppConfig struct {
-	Host string
-	Port string
-	Db   DbConfig
+	Host    string
+	Port    string
+	ApiKey  string `json:"api_key"`
+	Db      DbConfig
 	Session SessionConfig
 }
 
@@ -28,8 +29,8 @@ type DbConfig struct {
 }
 
 type SessionConfig struct {
-	Password string
-	SecretKey string `json:"secret_key"`
+	Password   string
+	SecretKey  string `json:"secret_key"`
 	SessionKey string `json:"session_key"`
 }
 
